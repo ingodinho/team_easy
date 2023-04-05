@@ -2,10 +2,11 @@ import express, {Response, Request, Router} from "express";
 import {registerUser} from "../service/register-user";
 import {LoginCredentials, UserToRegister} from "../models/user-dtos";
 import {loginUser} from "../service/login-user";
+import {isAuthenticated} from "../utils/auth/auth-middleware";
 
 export const userController: Router = express.Router();
 
-userController.get("/", async (req: Request, res: Response) => {
+userController.get("/", isAuthenticated, async (req: Request, res: Response) => {
     res.status(200).send("Ok");
 })
 
@@ -24,7 +25,6 @@ userController.post("/login", async (req: Request, res: Response) => {
     const loginCredentials = req.body as LoginCredentials;
     try {
         const loginData = await loginUser(loginCredentials);
-        res.cookie("refresh_token", loginData.refreshToken, {httpOnly: true, secure: true});
         res.status(200).json({accessToken: loginData.accessToken, userId: loginData.userId});
     } catch (e) {
         console.log("/user/login", e);

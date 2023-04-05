@@ -1,6 +1,7 @@
 import express, {Response, Request, Router} from "express";
-import {User} from "../entity/User";
 import {registerUser} from "../service/register-user";
+import {LoginCredentials, UserToRegister} from "../models/user-dtos";
+import {loginUser} from "../service/login-user";
 
 export const userController: Router = express.Router();
 
@@ -9,13 +10,24 @@ userController.get("/", async (req: Request, res: Response) => {
 })
 
 userController.post("/register", async (req: Request, res: Response) => {
-    const data = req.body as User;
-    const newUser = new User(data.userName, data.firstName, data.lastName, data.email, data.password);
+    const userData = req.body as UserToRegister;
     try {
-        const registeredUser = await registerUser(newUser);
-        res.status(200).json({data: registeredUser});
+        const registeredUser = await registerUser(userData);
+        res.status(200).send(registeredUser);
     } catch (e) {
         console.log("/user/register", e);
-        res.status(400).json({msg: "Could not register new user"})
+        res.status(400).json({msg: "Could not register new user"});
+    }
+})
+
+userController.post("/login", async (req: Request, res: Response) => {
+    const loginCredentials = req.body as LoginCredentials;
+    try {
+        const loginData = await loginUser(loginCredentials);
+        res.cookie("refresh_token", loginData.refreshToken, {httpOnly: true, secure: true});
+        res.status(200).json({accessToken: loginData.accessToken, userId: loginData.userId});
+    } catch (e) {
+        console.log("/user/login", e);
+        res.status(400).json({msg: "Login not successful"});
     }
 })

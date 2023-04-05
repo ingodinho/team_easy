@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import {createHash, createRandomHash} from "../utils/encryption/hash";
 
 @Entity()
 export class User {
@@ -17,14 +18,19 @@ export class User {
     @Column("varchar", {length: 100, nullable: false})
     email: string;
 
-    @Column("varchar", {length: 100, nullable: false})
-    password: string;
+    @Column("varchar", {nullable: false})
+    passwordHash: string;
+
+    @Column("varchar", {nullable: false})
+    passwordSalt: string;
 
     constructor(username: string, firstName: string, lastName: string, email: string, password: string) {
         this.userName = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.passwordSalt = createRandomHash();
+        this.passwordHash = createHash(password + this.passwordSalt);
     }
+
 }

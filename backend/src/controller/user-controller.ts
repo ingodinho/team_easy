@@ -10,7 +10,7 @@ userController.get("/", isAuthenticated, async (req: Request, res: Response) => 
     res.status(200).send("Ok");
 })
 
-userController.post("/register", async (req: Request, res: Response) => {
+userController.post("/register", async (req : Request, res : Response) => {
     const userData = req.body as UserToRegister;
     try {
         const registeredUser = await registerUser(userData);
@@ -21,7 +21,7 @@ userController.post("/register", async (req: Request, res: Response) => {
     }
 })
 
-userController.post("/login", async (req: Request, res: Response) => {
+userController.post("/login", async (req : Request, res : Response) => {
     const loginCredentials = req.body as LoginCredentials;
     try {
         const loginData = await loginUser(loginCredentials);
@@ -30,4 +30,8 @@ userController.post("/login", async (req: Request, res: Response) => {
         console.log("/user/login", e);
         res.status(400).json({msg: "Login not successful"});
     }
+})
+
+// todo: delete cookie
+userController.post("/logout", async (req : Request, res : Response) => {
 })

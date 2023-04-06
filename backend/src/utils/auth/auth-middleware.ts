@@ -13,7 +13,6 @@ const _unauthorized = (res: Response) => {
 export const isAuthenticated = (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const token = req.get("Authorization");
-        console.log()
         if(!token) {
             return _unauthorized(res);
         }

@@ -19,6 +19,7 @@ export const loginUser = async (loginCredentials : LoginCredentials) : Promise <
 
     const accessToken = createAccessToken(foundUser);
     const refreshToken = createRefreshToken(foundUser);
+
     return {
         accessToken: accessToken,
         refreshToken: refreshToken,

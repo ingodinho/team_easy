@@ -1,12 +1,12 @@
-import {LoginCredentials, LoginResponse} from "../models/user-dtos";
-import {userRepository} from "../repository/repositories";
-import {createHash} from "../utils/encryption/hash";
-import {createTokenFunction} from "../utils/token/create-token";
+import {ILoginCredentials, ILoginResponse} from "../../models/user-dtos";
+import {userRepository} from "../../repository/repositories";
+import {createHash} from "../../utils/encryption/hash";
+import {createTokenFunction} from "../../utils/token/create-token";
 
 const createAccessToken = createTokenFunction("access");
 const createRefreshToken = createTokenFunction("refresh");
 
-export const loginUser = async (loginCredentials : LoginCredentials) : Promise <LoginResponse> => {
+export const loginUser = async (loginCredentials : ILoginCredentials) : Promise <ILoginResponse> => {
     const foundUser = await userRepository.findOneBy({email: loginCredentials.email});
     if(!foundUser) {
         throw new Error("No user with this email found");

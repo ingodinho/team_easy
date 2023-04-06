@@ -1,4 +1,4 @@
-export interface UserToRegister {
+export interface IUserToRegister {
     userName: string;
     firstName: string;
     lastName: string;
@@ -6,12 +6,12 @@ export interface UserToRegister {
     password: string;
 }
 
-export interface LoginCredentials {
+export interface ILoginCredentials {
     email: string;
     password: string;
 }
 
-export interface LoginResponse {
+export interface ILoginResponse {
     accessToken: string;
     refreshToken: string;
     userId: number;

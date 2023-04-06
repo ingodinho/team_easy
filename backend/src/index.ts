@@ -7,8 +7,9 @@ import session, {SessionOptions} from "express-session";
 
 dotenv.config({path: "src/config/.env"});
 
-import {AppDataSource} from "./data-source";
+import {AppDataSource} from "./repository/data-source";
 import {userController} from "./controller/user-controller";
+import {postController} from "./controller/post-controller";
 
 const app: Application = express();
 
@@ -39,6 +40,7 @@ app.use(cors({origin: [FRONTEND_URL], credentials: true}));
 
 // controller
 app.use(apiV1 + "/user", userController);
+app.use(apiV1 + "/post", postController);
 
 // error 404
 app.use((_, res: Response) => {
